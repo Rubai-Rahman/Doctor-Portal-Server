@@ -5,6 +5,8 @@ const port = process.env.PORT || 5000;
 const { MongoClient, ServerApiVersion } = require("mongodb");
 require("dotenv").config();
 const admin = require("firebase-admin");
+const ObjectId = require("mongodb").ObjectId;
+const fileUpload = require("express-fileupload");
 
 const serviceAccount = require("./doctorsportal-firebase-adminsdk.json");
 
@@ -13,7 +15,7 @@ admin.initializeApp({
 });
 
 app.use(cors());
-
+app.use(fileUpload());
 app.use(express.json());
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.f8dsb.mongodb.net/?retryWrites=true&w=majority`;
@@ -40,26 +42,33 @@ async function run() {
     await client.connect();
     const database = client.db("doctors_portal");
     const appointmentsCollection = database.collection("appointments");
-
+    const doctorsCollection = database.collection("doctors");
     const userCollection = database.collection("users");
-
+    //appointment api
     app.post("/appointments", async (req, res) => {
       const appointment = req.body;
       const result = await appointmentsCollection.insertOne(appointment);
-      console.log(appointment);
       res.json(result);
     });
 
     //get//
     app.get("/appointments", verifyToken, async (req, res) => {
       const email = req.query.email;
-      const date = new Date(req.query.date).toLocaleDateString();
-      console.log(date)
+      const date = req.query.date;
       const query = { email: email, date: date };
       const cursor = appointmentsCollection.find(query);
       const appointments = await cursor.toArray();
       res.json(appointments);
     });
+
+    //single user
+    app.get("/appointments/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await appointmentsCollection.findOne(query);
+      res.json(result);
+    });
+    //user api
 
     // post user
     app.post("/users", async (req, res) => {
@@ -82,7 +91,7 @@ async function run() {
       const requester = req.decodedEmail;
       if (requester) {
         const requesterAccount = await userCollection.findOne({
-          email: requester
+          email: requester,
         });
         if (requesterAccount.role === "admin") {
           const filter = { email: user.email };
@@ -99,7 +108,6 @@ async function run() {
     // get user
     app.get("/users/:email", async (req, res) => {
       const email = req.params.email;
-
       const query = { email: email };
       const user = await userCollection.findOne(query);
       let isAdmin = false;
@@ -107,6 +115,30 @@ async function run() {
         isAdmin = true;
       }
       res.json({ admin: isAdmin });
+    });
+    //doctor api
+    //post api
+    app.post("/doctors", async (req, res) => {
+      const name = req.body.name;
+      const email = req.body.email;
+      const pic = req.files.image;
+      const picData = pic.data;
+      const encodedPic = picData.toString("base64");
+      const imageBuffer = Buffer.from(encodedPic, "base64");
+      const doctor = {
+        name,
+        email,
+        image: imageBuffer,
+      };
+      const result = await doctorsCollection.insertOne(doctor);
+      res.json(result);
+    });
+    //get
+
+    app.get("/doctors", async (req, res) => {
+      const cursor = appointmentsCollection.find({});
+      const doctors = await cursor.toArray();
+      res.json(doctors);
     });
   } finally {
     //await client.close();
