@@ -8,8 +8,21 @@ const admin = require("firebase-admin");
 const ObjectId = require("mongodb").ObjectId;
 const fileUpload = require("express-fileupload");
 
-const serviceAccount = require("./doctorsportal-firebase-adminsdk.json");
-
+const serviceAccount = {
+  type: "service_account",
+  project_id: "doctorsportal-29f15",
+  private_key_id: "b9b313179821aa8ab2b086ef4d4a3497199f41f5",
+  private_key:
+    "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC7tADc1j7DWddK\nH3IyrwRl5ht4zqGSE2McwzIiq+mUUtp+pf05NkWYcNGSe49nUSgnnTktUOjQ37ZW\nOlPevGQGj6z6QNaDoBTvLNTUAL7e/OjZR6le06n2ws7dEUughEQYhGn1gEkLpn4V\ne7WfQBjdsQMyv5TQY/q9jwuQNv7Bze9BPWLMALn2D+Ah8bwxlxc2LegQYzSkt5ca\nPysmldX0opfo3jH4smnM76yEeov7i6SKFXxHfb/lFECpI7ujhC4+aylXpLpCQy+D\nUvr8+WFTvBI+tAibFIKpPOy9prYKVwt6XBD1+WSrvYP8wENvdbPQvJdWWCgV0XwC\n8EwIchHtAgMBAAECggEABqEogX+yiBU7PvTRqQcvc5TCljVOHrw/IcUTu8/C4YPP\noluAffb0CghzMwrYve4mTn68YYk3m0xtwqmdA0yA9aCm5T4kugiNi5bBV1HX/kUW\ngEvTg70uYXbwPzSdCMQw4KnyUUMJ9f/O+RS0MjXdfUFMRAxzWBqbUvrsjlggoMbO\nKK1Ag/IwwKmtp71UV1moyY9BSyjkBLrKobvsGOmkkKuXjb7an/33vhaLT88Zy+lb\nLCpY/hcbZVRZKemwy4I83pyOVUsj/ZuIQi+z2UlT1KwrzOzgPFfAiDhjEzvvMqYa\nkvI3HEFChEZ5+R2X10zPRJYYxVTgx+PT0J4RSe6bAQKBgQDrPbbVoQDtNmL5XZuv\nTuiVFNKlqO7XU/Jtu9Nm/61gxB6ifbid0lz2VLCRFgBTNev7T2wSBmeY/EptV1Gf\nGm7ozv3l6qArdOpvTLlRfC5tpLtAgc+0ats/8nP/Kh7ih4aPjfKIoGdcLFgoZ47s\nikGIDgeZSesCc47EmGIVg2sZrQKBgQDMRF5uUjbxIrDdETPd8uhh9DpxtaBIiKBz\nbSXnSumO7IdIjM1YPTWMrfsLwD3pQGKSGqhWycXubNJlwKOZK/0SZ1JtEwTDbTpF\nxC8rWE+HWJxwm37w8Wv9sFj8uPl0xo+iR30B1AE9ZgXKWeG/AqU3kQI6e1islmw1\nBVM2SF5hQQKBgFnEri2th/39oB1KxGtMsGKblJrU8XfIOB356/1FGjNwA8S8NyQ6\nr3Ds9ogXHj6iuA+pyjLCsOvncrtw89vEKYi73JXNSBvtPL0GST24Jrt+flpqbwmJ\nMWugqPU5bJnDX+0OHPxYQbkhzu50Pk0zoTg7KlkrpPvFfzi0cdGF2evtAoGADGlD\nC5T3PaOL94KqEhxGPl1mh64vdPjINvs0yF7m3gZFGgVkHK5raIbRsB8YI+oDkzkH\nbW6JFjmKdyBDUHU5xTp96Z60NWOXnNGUxB9zhZe+uaDZD667jwh9/60FizDdXVDW\nqZvGD4L5axgW/VId08h9yCvicWoaXQZbzfqLsYECgYAnBUg0a3TWMFLBaM5/Ubzf\nfuYEBjpGUDBXpbolo79ayMQb4tROVzsTjGhQcEbYkQ0K3vWzjqHVKVka12bKr39/\nBm+h6stbB7YQQ16m+nrRudEhgocmRv/bC0bud4kMvte/WrdXyOzsphLhWr4x6Mf4\nbsY+nTS7WO6Vp5Npz/MpGw==\n-----END PRIVATE KEY-----\n",
+  client_email:
+    "firebase-adminsdk-s9zt8@doctorsportal-29f15.iam.gserviceaccount.com",
+  client_id: "113846190782893776400",
+  auth_uri: "https://accounts.google.com/o/oauth2/auth",
+  token_uri: "https://oauth2.googleapis.com/token",
+  auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
+  client_x509_cert_url:
+    "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-s9zt8%40doctorsportal-29f15.iam.gserviceaccount.com",
+};
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
