@@ -149,7 +149,7 @@ async function run() {
     //get
 
     app.get("/doctors", async (req, res) => {
-      const cursor = appointmentsCollection.find({});
+      const cursor = doctorsCollection.find({});
       const doctors = await cursor.toArray();
       res.json(doctors);
     });
